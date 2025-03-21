@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+
+namespace dctool
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Title = "Dc MUTI-TOOL";
+            while (true)
+            {
+                Console.Clear();
+                
+                Banner();
+                Menu();
+
+            ConsoleKeyInfo input = Console.ReadKey();
+            char option = input.KeyChar;
+            Console.WriteLine(option);
+            switch (option)
+            {
+                case '1':
+                    webhookMessage();
+                    break;
+                case '4':
+                    return;
+            }
+        }
+    }
+
+        static void Banner()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(@"                 ________  ________ _________  ________  ________  ___");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(@"                |\   ___ \|\   ____\\___   ___\\   __  \|\   __  \|\  \");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine(@"                \ \  \_|\ \ \  \___\|___ \  \_\ \  \|\  \ \  \|\  \ \  \");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine(@"                 \ \  \ \\ \ \  \       \ \  \ \ \  \\\  \ \  \\\  \ \  \");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(@"                  \ \  \_\\ \ \  \____   \ \  \ \ \  \\\  \ \  \\\  \ \  \____");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(@"                   \ \_______\ \_______\  \ \__\ \ \_______\ \_______\ \_______\");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine(@"                    \|_______|\|_______|   \|__|  \|_______|\|_______|\|_______|");
+            Console.WriteLine("\n                                                                    dctool - @MasonproYT15 ");                                                              
+        }
+        static void Menu()
+        {
+            Console.WriteLine("\n1. Send Webhook Message");
+            Console.WriteLine("2. View Guild Info");
+            Console.WriteLine("3. Check Member Status");
+            Console.WriteLine("4. Exit");
+        }
+
+        static async void webhookMessage()
+        {
+            Console.Clear();
+            Console.Write("Webhook URL: ");
+            string webhook = Console.ReadLine();
+
+            Console.Write("Message To Send: ");
+            string message = Console.ReadLine();
+
+            String json = $"{{\"content\":\"{message}\"}}";
+            using (HttpClient client = new HttpClient()) 
+            {
+                HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                await client.PostAsync(webhook, content);
+            }
+        }
+    }
+}
